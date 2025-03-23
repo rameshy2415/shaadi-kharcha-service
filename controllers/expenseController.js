@@ -13,18 +13,16 @@ exports.getExpenses = async (req, res) => {
 
 // Add new expense
 exports.addExpense = async (req, res) => {
-  const { category, description, amount, paidBy, paymentMethod, notes, receipt } = req.body;
+  const { id, category, description, amount, date } = req.body;
 
   try {
     const newExpense = new Expense({
+      id,
       user: req.user.id,
       category,
       description,
       amount,
-      paidBy,
-      paymentMethod,
-      notes,
-      receipt
+      date
     });
 
     const expense = await newExpense.save();
@@ -76,7 +74,7 @@ exports.deleteExpense = async (req, res) => {
       return res.status(401).json({ message: 'Not authorized' });
     }
 
-    await Expense.findByIdAndRemove(req.params.id);
+    await Expense.findByIdAndDelete(req.params.id);
     res.json({ message: 'Expense removed' });
   } catch (error) {
     console.error(error);

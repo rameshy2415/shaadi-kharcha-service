@@ -1,48 +1,52 @@
 // Server setup (app.js)
-const express = require('express');
-const connectDB = require('./config/db');
-const path = require('path');
-require('dotenv').config();
+const express = require("express");
+const connectDB = require("./config/db");
+const path = require("path");
+require("dotenv").config();
+const cors = require("cors");
 
 const app = express();
 
 // Connect to MongoDB
 connectDB();
 
+//app.options("*", cors());
+
+// // CORS
+app.use((req, res, next) => {
+  res.setHeader("Access-Control-Allow-Origin", "*"); // allow all domains
+  res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization, x-auth-token");
+  res.header("Access-Control-Allow-Credentials", "true");
+
+  // Handle preflight OPTIONS request
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
+});
+
 // Initialize Middleware
 app.use(express.json({ extended: false }));
 
 // Define Routes
-app.use('/api/auth', require('./routes/auth'));
-app.use('/api/expenses', require('./routes/expenses'));
+app.use("/api/auth", require("./routes/auth"));
+app.use("/api/expenses", require("./routes/expenses"));
 
 // Serve static assets in production
-if (process.env.NODE_ENV === 'production') {
+if (process.env.NODE_ENV === "production") {
   // Set static folder
-  app.use(express.static('client/build'));
+  app.use(express.static("client/build"));
 
-  app.get('*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'));
+  app.get("*", (req, res) => {
+    res.sendFile(path.resolve(__dirname, "client", "build", "index.html"));
   });
 }
 
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // import fs from 'node:fs/promises';
 
@@ -65,7 +69,6 @@ app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
 
 //   next();
 // });
-
 
 // // 404
 // app.use((req, res, next) => {

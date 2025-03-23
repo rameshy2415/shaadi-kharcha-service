@@ -1,41 +1,44 @@
 // Expense Model (models/Expense.js)
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 
 const ExpenseSchema = new mongoose.Schema({
+  id: {
+    type: Number,
+    required: true,
+  },
   user: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: "User",
+    required: true,
   },
   category: {
     type: String,
     required: true,
-    enum: ['Venue', 'Catering', 'Decoration', 'Attire', 'Photography', 'Entertainment', 'Transport', 'Other']
+    enum: [
+      "Venue",
+      "Catering",
+      "Decoration",
+      "Attire",
+      "Photography",
+      "Entertainment",
+      "Transportation",
+      "Gifts",
+      "Other",
+    ],
   },
   description: {
     type: String,
-    required: true
+    required: true,
   },
   amount: {
     type: Number,
-    required: true
+    required: true,
   },
   date: {
-    type: Date,
-    default: Date.now
-  },
-  paidBy: {
     type: String,
-    required: true
-  },
-  paymentMethod: {
-    type: String,
-    enum: ['Cash', 'Credit Card', 'Bank Transfer', 'Check', 'Other'],
-    default: 'Cash'
-  },
-  notes: String,
-  receipt: String // URL to uploaded receipt image
+    default: new Date().toISOString().split("T")[0]
+  }
 });
 
-const Expense = mongoose.model('Expense', ExpenseSchema);
+const Expense = mongoose.model("Expense", ExpenseSchema);
 module.exports = Expense;
