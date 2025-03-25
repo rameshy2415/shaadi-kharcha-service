@@ -33,6 +33,7 @@ app.use(express.json({ extended: false }));
 // Define Routes
 app.use("/api/auth", require("./routes/auth"));
 app.use("/api/expenses", require("./routes/expenses"));
+app.use("/api/receivemoney", require("./routes/receiveMoney"));
 
 // Serve static assets in production
 if (process.env.NODE_ENV === "production") {
