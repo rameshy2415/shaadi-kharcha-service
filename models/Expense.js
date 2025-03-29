@@ -11,10 +11,11 @@ const ExpenseSchema = new mongoose.Schema({
     type: String,
     required: true,
     enum: [
+      "Attire",
+      "utensils",
       "Venue",
       "Catering",
       "Decoration",
-      "Attire",
       "Photography",
       "Entertainment",
       "Transportation",
